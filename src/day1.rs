@@ -1,5 +1,3 @@
-
-
 #[aoc_generator(day1)]
 fn to_vec(input: &str) -> Vec<usize> {
     input.lines().map(|i| i.parse().unwrap()).collect()
@@ -22,11 +20,10 @@ fn day1_1(input: &Vec<usize>) -> usize {
 fn day1_2(input: &Vec<usize>) -> usize {
     let mut v = [].to_vec();
     for x in input.windows(3) {
-        v.push(x.iter().fold(0usize, |a,&b| a + b));
+        v.push(x.iter().fold(0usize, |a, &b| a + b));
     }
     day1_1(&v)
 }
-
 
 #[cfg(test)]
 mod tests {

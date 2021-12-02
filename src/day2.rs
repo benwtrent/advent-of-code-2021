@@ -1,4 +1,4 @@
-use crate::day2::Direction::{FORWARD, UP, DOWN};
+use crate::day2::Direction::{DOWN, FORWARD, UP};
 
 enum Direction {
     UP(usize),
@@ -8,16 +8,19 @@ enum Direction {
 
 #[aoc_generator(day2)]
 fn to_vec(input: &str) -> Vec<Direction> {
-    input.lines().map(|i|{
-        let move_str: Vec<_> = i.split(" ").collect();
-        let move_n: usize = move_str.get(1).unwrap().parse().unwrap();
-        match move_str.get(0).unwrap().as_ref() {
-           "forward" => FORWARD(move_n),
-            "up" => UP(move_n),
-            "down" => DOWN(move_n),
-            _ => panic!("Unknown direction")
-        }
-    }).collect()
+    input
+        .lines()
+        .map(|i| {
+            let move_str: Vec<_> = i.split(" ").collect();
+            let move_n: usize = move_str.get(1).unwrap().parse().unwrap();
+            match move_str.get(0).unwrap().as_ref() {
+                "forward" => FORWARD(move_n),
+                "up" => UP(move_n),
+                "down" => DOWN(move_n),
+                _ => panic!("Unknown direction"),
+            }
+        })
+        .collect()
 }
 
 #[aoc(day2, part1)]
@@ -25,7 +28,7 @@ fn day2_1(input: &Vec<Direction>) -> usize {
     let mut h = 0;
     let mut v = 0;
     for x in input {
-        match x { 
+        match x {
             FORWARD(n) => h += n,
             UP(n) => v -= n,
             DOWN(n) => v += n,
@@ -44,14 +47,13 @@ fn day2_2(input: &Vec<Direction>) -> usize {
             FORWARD(n) => {
                 h += n;
                 v += aim * n;
-            },
+            }
             UP(n) => aim -= n,
             DOWN(n) => aim += n,
         }
     }
     h * v
 }
-
 
 #[cfg(test)]
 mod tests {
