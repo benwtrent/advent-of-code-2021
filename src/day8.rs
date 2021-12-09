@@ -48,22 +48,22 @@ fn day8_2(input: &Vec<(Vec<BTreeSet<char>>, Vec<BTreeSet<char>>)>) -> usize {
                     .collect();
             let mut known_patterns: HashMap<BTreeSet<char>, usize> = HashMap::new();
             let mut known_patterns_rev_lookup: HashMap<usize, BTreeSet<char>> = HashMap::new();
-            let eight: Option<&BTreeSet<_>> = all.iter().find(|p| p.len() == 7);
+            let eight = all.iter().find(|p| p.len() == 7);
             if let Some(eight) = eight {
                 known_patterns.insert(eight.clone(), 8);
                 known_patterns_rev_lookup.insert(8, eight.clone());
             }
-            let seven: Option<&BTreeSet<_>> = all.iter().find(|p| p.len() == 3);
+            let seven = all.iter().find(|p| p.len() == 3);
             if let Some(seven) = seven {
                 known_patterns.insert(seven.clone(), 7);
                 known_patterns_rev_lookup.insert(7, seven.clone());
             }
-            let one: Option<&BTreeSet<_>> = all.iter().find(|p| p.len() == 2);
+            let one = all.iter().find(|p| p.len() == 2);
             if let Some(one) = one {
                 known_patterns.insert(one.clone(), 1);
                 known_patterns_rev_lookup.insert(1, one.clone());
             }
-            let four: Option<&BTreeSet<_>> = all.iter().find(|p| p.len() == 4);
+            let four = all.iter().find(|p| p.len() == 4);
             if let Some(four) = four {
                 known_patterns.insert(four.clone(), 4);
                 known_patterns_rev_lookup.insert(4, four.clone());
@@ -77,15 +77,6 @@ fn day8_2(input: &Vec<(Vec<BTreeSet<char>>, Vec<BTreeSet<char>>)>) -> usize {
                 if !known_patterns_rev_lookup.contains_key(&9) {
                     let nine: Option<_> = if let Some(four) = known_patterns_rev_lookup.get(&4) {
                         all.iter().find(|p| p.len() == 6 && p.is_superset(four))
-                    } else if let (Some(zero), Some(six)) = (
-                        known_patterns_rev_lookup.get(&0),
-                        known_patterns_rev_lookup.get(&6),
-                    ) {
-                        all.iter().find(|p| {
-                            p.len() == 6
-                                && p.difference(zero).count() > 0
-                                && p.difference(six).count() > 0
-                        })
                     } else {
                         Option::None
                     };
@@ -109,15 +100,6 @@ fn day8_2(input: &Vec<(Vec<BTreeSet<char>>, Vec<BTreeSet<char>>)>) -> usize {
                             .collect();
                         all.iter()
                             .find(|p| p.len() == 6 && p.is_superset(&desired_subset))
-                    } else if let (Some(six), Some(nine)) = (
-                        known_patterns_rev_lookup.get(&6),
-                        known_patterns_rev_lookup.get(&9),
-                    ) {
-                        all.iter().find(|p| {
-                            p.len() == 6
-                                && p.difference(six).count() > 0
-                                && p.difference(nine).count() > 0
-                        })
                     } else {
                         Option::None
                     };
@@ -136,15 +118,6 @@ fn day8_2(input: &Vec<(Vec<BTreeSet<char>>, Vec<BTreeSet<char>>)>) -> usize {
                                 && p.difference(zero).count() > 0
                                 && p.difference(nine).count() > 0
                         })
-                    } else if let (Some(eight), Some(two), Some(one)) = (
-                        known_patterns_rev_lookup.get(&8),
-                        known_patterns_rev_lookup.get(&2),
-                        known_patterns_rev_lookup.get(&1),
-                    ) {
-                        let special_diff: BTreeSet<char> = one.intersection(two).cloned().collect();
-                        let finding: BTreeSet<char> =
-                            eight.difference(&special_diff).cloned().collect();
-                        all.iter().find(|p| p.len() == 6 && p.is_superset(&finding))
                     } else {
                         Option::None
                     };
@@ -165,12 +138,6 @@ fn day8_2(input: &Vec<(Vec<BTreeSet<char>>, Vec<BTreeSet<char>>)>) -> usize {
                         finding.extend(eight.difference(six).cloned().collect::<BTreeSet<char>>());
                         finding.extend(eight.difference(nine).cloned().collect::<BTreeSet<char>>());
                         all.iter().find(|p| p.len() == 5 && p.is_superset(&finding))
-                    } else if let (Some(three), Some(five)) = (
-                        known_patterns_rev_lookup.get(&3),
-                        known_patterns_rev_lookup.get(&5),
-                    ) {
-                        all.iter()
-                            .find(|p| p.len() == 5 && !p.is_superset(five) && !p.is_superset(three))
                     } else {
                         Option::None
                     };
@@ -180,13 +147,7 @@ fn day8_2(input: &Vec<(Vec<BTreeSet<char>>, Vec<BTreeSet<char>>)>) -> usize {
                     }
                 }
                 if !known_patterns_rev_lookup.contains_key(&3) {
-                    let three = if let (Some(two), Some(five)) = (
-                        known_patterns_rev_lookup.get(&2),
-                        known_patterns_rev_lookup.get(&5),
-                    ) {
-                        all.iter()
-                            .find(|p| p.len() == 5 && !p.is_superset(five) && !p.is_superset(two))
-                    } else if let Some(one) = known_patterns_rev_lookup.get(&1) {
+                    let three = if let Some(one) = known_patterns_rev_lookup.get(&1) {
                         all.iter().find(|p| p.len() == 5 && p.is_superset(one))
                     } else {
                         Option::None
