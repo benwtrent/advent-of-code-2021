@@ -94,8 +94,7 @@ fn day11_1(input: &Vec<Vec<Octopus>>) -> usize {
                 }
             }
         }
-        while Some(oct) = to_flash.pop() {
-            let oct = to_flash.pop().unwrap();
+        while let Some(oct) = to_flash.pop() {
             if octopuses[oct.0][oct.1].flashed {
                 continue;
             }
@@ -137,7 +136,7 @@ fn day11_2(input: &Vec<Vec<Octopus>>) -> usize {
                 }
             }
         }
-        while Some(oct) = to_flash.pop() {
+        while let Some(oct) = to_flash.pop() {
             if octopuses[oct.0][oct.1].flashed {
                 continue;
             }
