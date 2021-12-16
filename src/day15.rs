@@ -1,17 +1,5 @@
 use std::cmp::Ordering;
-use std::collections::{BTreeMap, BinaryHeap, HashMap, HashSet, VecDeque};
-
-macro_rules! tree_set {
-    ( $( $x:expr ),* ) => {
-        {
-            let mut temp_set = BTreeSet::new();
-            $(
-                temp_set.insert($x);
-            )*
-            temp_set
-        }
-    };
-}
+use std::collections::{BinaryHeap, HashMap};
 
 #[derive(Debug, Copy, Clone)]
 struct Node {
@@ -145,20 +133,20 @@ fn day15_2(input: &str) -> usize {
 
         for n in neighbors(&pos, max_i, max_j) {
             let (y, y_plus) = if n.0 > (original_nodes.len() - 1) {
-                let y = (n.0 % (original_nodes.len()));
+                let y = n.0 % (original_nodes.len());
                 let y_plus = n.0 / (original_nodes.len());
                 (y, y_plus)
             } else {
                 (n.0, 0)
             };
             let (x, x_plus) = if n.1 > (original_nodes.first().unwrap().len() - 1) {
-                let x = (n.1 % (original_nodes.first().unwrap().len()));
+                let x = n.1 % (original_nodes.first().unwrap().len());
                 let x_plus = n.1 / (original_nodes.first().unwrap().len());
                 (x, x_plus)
             } else {
                 (n.1, 0)
             };
-            let mut node_cost = (original_nodes[y][x].val + x_plus + y_plus);
+            let mut node_cost = original_nodes[y][x].val + x_plus + y_plus;
             while node_cost > 9 {
                 node_cost -= 9
             }
