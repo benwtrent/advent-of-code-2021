@@ -31,7 +31,6 @@ fn to_vec(input: &str) -> String {
 enum Packet {
     Literal {
         version: usize,
-        type_id: usize,
         value: usize,
     },
     Operator {
@@ -62,7 +61,6 @@ impl Packet {
             (
                 Packet::Literal {
                     version: v,
-                    type_id: t,
                     value: usize::from_str_radix(&values.join(""), 2).unwrap(),
                 },
                 moving_pos,
@@ -129,7 +127,6 @@ impl Packet {
             }
             Packet::Literal {
                 version,
-                type_id: _,
                 value: _,
             } => vec![version],
         }
@@ -175,7 +172,6 @@ impl Packet {
             }
             Packet::Literal {
                 version: _,
-                type_id: _,
                 value,
             } => *value,
         }
@@ -214,15 +210,13 @@ mod tests {
     #[test]
     fn test_literal_packet() {
         let binary = to_vec("D2FE28");
-        let (packet, new_pos) = Packet::from_str(&binary, 0);
+        let (packet, _) = Packet::from_str(&binary, 0);
         if let Packet::Literal {
             version,
-            type_id,
             value,
         } = packet
         {
             assert_eq!(version, 6);
-            assert_eq!(type_id, 4);
             assert_eq!(value, 2021);
         }
     }
@@ -230,7 +224,7 @@ mod tests {
     #[test]
     fn test_len_operator() {
         let binary = to_vec("38006F45291200");
-        let (packet, new_pos) = Packet::from_str(&binary, 0);
+        let (packet, _) = Packet::from_str(&binary, 0);
         if let Packet::Operator {
             version,
             type_id,
@@ -241,16 +235,14 @@ mod tests {
             assert_eq!(type_id, 6);
             assert_eq!(packets.len(), 2);
             if let Packet::Literal {
-                version,
-                type_id,
+                version: _,
                 value,
             } = packets[0]
             {
                 assert_eq!(value, 10)
             }
             if let Packet::Literal {
-                version,
-                type_id,
+                version: _,
                 value,
             } = packets[1]
             {
@@ -262,7 +254,7 @@ mod tests {
     #[test]
     fn test_num_operator() {
         let binary = to_vec("EE00D40C823060");
-        let (packet, new_pos) = Packet::from_str(&binary, 0);
+        let (packet, _) = Packet::from_str(&binary, 0);
         if let Packet::Operator {
             version,
             type_id,
@@ -273,24 +265,21 @@ mod tests {
             assert_eq!(type_id, 3);
             assert_eq!(packets.len(), 3);
             if let Packet::Literal {
-                version,
-                type_id,
+                version: _,
                 value,
             } = packets[0]
             {
                 assert_eq!(value, 1)
             }
             if let Packet::Literal {
-                version,
-                type_id,
+                version: _,
                 value,
             } = packets[1]
             {
                 assert_eq!(value, 2)
             }
             if let Packet::Literal {
-                version,
-                type_id,
+                version: _,
                 value,
             } = packets[2]
             {
