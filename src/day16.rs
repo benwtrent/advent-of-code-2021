@@ -125,10 +125,7 @@ impl Packet {
                 v.push(version);
                 v
             }
-            Packet::Literal {
-                version,
-                value: _,
-            } => vec![version],
+            Packet::Literal { version, value: _ } => vec![version],
         }
     }
 
@@ -170,10 +167,7 @@ impl Packet {
                     _ => 0,
                 }
             }
-            Packet::Literal {
-                version: _,
-                value,
-            } => *value,
+            Packet::Literal { version: _, value } => *value,
         }
     }
 }
@@ -211,11 +205,7 @@ mod tests {
     fn test_literal_packet() {
         let binary = to_vec("D2FE28");
         let (packet, _) = Packet::from_str(&binary, 0);
-        if let Packet::Literal {
-            version,
-            value,
-        } = packet
-        {
+        if let Packet::Literal { version, value } = packet {
             assert_eq!(version, 6);
             assert_eq!(value, 2021);
         }
@@ -234,18 +224,10 @@ mod tests {
             assert_eq!(version, 1);
             assert_eq!(type_id, 6);
             assert_eq!(packets.len(), 2);
-            if let Packet::Literal {
-                version: _,
-                value,
-            } = packets[0]
-            {
+            if let Packet::Literal { version: _, value } = packets[0] {
                 assert_eq!(value, 10)
             }
-            if let Packet::Literal {
-                version: _,
-                value,
-            } = packets[1]
-            {
+            if let Packet::Literal { version: _, value } = packets[1] {
                 assert_eq!(value, 20)
             }
         }
@@ -264,25 +246,13 @@ mod tests {
             assert_eq!(version, 7);
             assert_eq!(type_id, 3);
             assert_eq!(packets.len(), 3);
-            if let Packet::Literal {
-                version: _,
-                value,
-            } = packets[0]
-            {
+            if let Packet::Literal { version: _, value } = packets[0] {
                 assert_eq!(value, 1)
             }
-            if let Packet::Literal {
-                version: _,
-                value,
-            } = packets[1]
-            {
+            if let Packet::Literal { version: _, value } = packets[1] {
                 assert_eq!(value, 2)
             }
-            if let Packet::Literal {
-                version: _,
-                value,
-            } = packets[2]
-            {
+            if let Packet::Literal { version: _, value } = packets[2] {
                 assert_eq!(value, 3)
             }
         }
