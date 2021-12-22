@@ -71,8 +71,8 @@ impl SnailFishElement {
     }
 
     fn add(&self, other: &SnailFishElement) -> SnailFishElement {
-        let mut lft = self.clone();
-        let mut rgt = other.clone();
+        let lft = self.clone();
+        let rgt = other.clone();
         SnailFishElement::Recur {
             values: vec![lft, rgt],
         }
